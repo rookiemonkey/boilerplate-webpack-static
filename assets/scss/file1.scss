@@ -1,0 +1,22 @@
+@font-face {
+    font-family: "Digital";
+    src: url('../fonts/digital.ttf')
+}
+
+body {
+
+    background-image: url('../images/dog.jpg');
+
+    h1 {
+        color: white;
+
+        span {
+            color: black;
+            font-family: 'Digital';
+
+            &:hover {
+                color: white;
+            }
+        }
+    }
+}
