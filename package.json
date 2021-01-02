@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "bundler": "clear && rm -rf /build && webpack"
+    "dev": "yarn run build && webpack serve",
+    "build": "clear && webpack"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
