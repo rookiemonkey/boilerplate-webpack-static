@@ -13,6 +13,12 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "build"),
         filename: '[name].[contenthash].bundle.js',
+
+    },
+    devServer: {
+        port: 8080,
+        contentBase: path.resolve(__dirname, "build"),
+        hot: true
     },
     optimization: {
         minimizer: [

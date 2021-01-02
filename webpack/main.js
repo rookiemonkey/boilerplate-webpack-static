@@ -25,3 +25,9 @@ import '../assets/videos/sample.mp4';
 //! ~~alternatively, you can use this function to import everything on a specific folder
 requireAll(require.context('./assets/images/', true, /\.(svg|gif|png)$/));
 function requireAll(r) { r.keys().forEach(r); }
+
+
+
+//! PREVENTS BROWSER FROM REFRESHING AND INJECTS THE NEW CODE INSTEAD
+//! might cause some bugs when injecting dynamic DOM Components
+// module.hot ? module.hot.accept() : null
