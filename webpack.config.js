@@ -1,41 +1,70 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin"););
 
 module.exports = {
+    mode: 'development',
     entry: {
-        // property will be the name of the output file
-        main: './webpack/main.js',
+        main: './webpack.js',
     },
     output: {
         path: path.resolve(__dirname, "build"),
         filename: '[name].[contenthash].bundle.js',
     },
-    plugins: [new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "index.html")
-    })],
+    optimization: {
+        minimizer: [
+            new OptimizeCssAssetsPlugin(),
+            new TerserPlugin(),
+            new HtmlWebpackPlugin({
+                template: path.resolve(__dirname, "index.html"),
+                minify: {
+                    removeAttributeQuotes: true,
+                    collapseWhitespace: true,
+                    removeComments: true
+                }
+            })
+        ]
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({ template: path.resolve(__dirname, "index.html") }),
+        new MiniCssExtractPlugin({ filename: '[name].[contenthash].bundle.css' })
+    ],
     module: {
         rules: [
             {
                 // the target html file is defined inside the HtmlWebpackPlugin
                 test: /\.html$/,
-                loader: "html-loader",
-                options: {
-                    attributes: false,
-                }
+                loader: "html-loader"
             },
             {
-                // will check for every .css file starting from the entry point
-                // !this will not create a css file, but instead js will inject style tag
-                // !upon load of the html
+                // !this will create a css file and inject a link tag on html on head tag
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"]
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        publicPath: ''
+                    }
+                }, {
+                    loader: "css-loader"
+                }]
             },
             {
-                // will check for every .css file starting from the entry point
-                // !this will not create a css file, but instead js will inject style tag
-                // !upon load of the html
+                // !this will create a css file and inject a link tag on html on head tag
                 test: /\.scss$/,
-                use: ["style-loader", "css-loader", "sass-loader"]
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        publicPath: ''
+                    }
+                }, {
+                    loader: "css-loader"
+                }, {
+                    loader: "sass-loader"
+                }]
             },
             {
                 // FONTS: https://chriscourses.com/blog/loading-fonts-webpack
