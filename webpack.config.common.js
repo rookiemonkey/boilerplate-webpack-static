@@ -120,6 +120,15 @@ module.exports = {
                         }
                     },
                     {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true,
+                            postcssOptions: {
+                                path: path.resolve(__dirname, "./postcss.config.js")
+                            }
+                        }
+                    },
+                    {
                         loader: 'sass-loader',
                         options: {
                             sourceMap: true
@@ -138,7 +147,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[ext]',
+                            name: '[name].[hash].[ext]',
                             outputPath: 'assets/fonts/'
                         }
                     }
