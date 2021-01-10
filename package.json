@@ -4,8 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn run build && webpack serve",
-    "build": "clear && webpack --config ./webpack.config.js"
+    "dev:serve": "yarn run dev:build && webpack serve",
+    "dev:build": "clear && webpack --config ./webpack.config.dev.js",
+    "prod:serve": "yarn run prod:build && webpack serve",
+    "prod:build": "clear && webpack --config ./webpack.config.prod.js"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -19,15 +21,16 @@
     "html-loader": "^1.3.2",
     "html-webpack-plugin": "^4.5.0",
     "mini-css-extract-plugin": "^1.3.3",
+    "node-sass": "^5.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "regenerator-runtime": "^0.13.7",
-    "node-sass": "^5.0.0",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
     "webpack": "^5.4.0",
     "webpack-cli": "^4.2.0",
-    "webpack-dev-server": "^3.11.1"
+    "webpack-dev-server": "^3.11.1",
+    "webpack-merge": "^5.7.3"
   }
 }

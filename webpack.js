@@ -11,6 +11,7 @@ import './src/assets/js/index';
 
 
 // !~~CSS vendors/libraries first, then main css
+// !~~you can directy use scss w/o using node-sass
 import './src/assets/css/bootstrap.css'
 import './src/assets/css/styles.css';
 import './src/assets/scss/index.scss';

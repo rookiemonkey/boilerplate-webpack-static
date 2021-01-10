@@ -6,24 +6,22 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-    mode: 'production',
-
 
     entry: {
-        main: path.resolve(__dirname, "/webpack.js"),
+        main: path.resolve(__dirname, "./webpack.js"),
     },
 
 
     output: {
-        path: path.resolve(__dirname, "/build"),
+        path: path.resolve(__dirname, "./build"),
         filename: '[name].[contenthash].bundle.js',
-
+        publicPath: '',
     },
 
 
     devServer: {
+        contentBase: path.resolve(__dirname, "./build"),
         port: 8080,
-        contentBase: path.resolve(__dirname, "/build"),
         hot: true
     },
 
@@ -33,7 +31,8 @@ module.exports = {
             new OptimizeCssAssetsPlugin(),
             new TerserPlugin(),
             new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, "/src/index.html"),
+                template: path.resolve(__dirname, "./src/index.html"),
+                publicPath: '',
                 minify: {
                     removeAttributeQuotes: true,
                     collapseWhitespace: true,
@@ -46,7 +45,7 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({ template: path.resolve(__dirname, "/src/index.html") }),
+        new HtmlWebpackPlugin({ template: path.resolve(__dirname, "./src/index.html") }),
         new MiniCssExtractPlugin({ filename: '[name].[contenthash].bundle.css' })
     ],
 
@@ -81,11 +80,27 @@ module.exports = {
             {
                 // !this will create a css file and inject a link tag on html on head tag
                 // !pointing to the output css file
-                test: /\.scss$/,
+                test: /\.s[ac]ss$/,
                 use: [
-                    "style-loader",
-                    "css-loader",
-                    "sass-loader",
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: ''
+                        }
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            importLoaders: 1
+                        }
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    },
                 ],
             },
 
@@ -115,7 +130,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name][hash].[ext]',
+                            name: '[name].[hash].[ext]',
                             outputPath: 'assets/images/'
                         }
                     }
@@ -131,7 +146,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name][hash].[ext]',
+                            name: '[name].[hash].[ext]',
                             outputPath: 'assets/videos/'
                         }
                     }
