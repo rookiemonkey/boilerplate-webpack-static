@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
@@ -45,8 +46,31 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({ template: path.resolve(__dirname, "./src/index.html") }),
-        new MiniCssExtractPlugin({ filename: '[name].[contenthash].bundle.css' })
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "./src/index.html")
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].bundle.css'
+        }),
+        new ImageMinimizerPlugin({
+            minimizerOptions: {
+                plugins: [
+                    ['gifsicle', { interlaced: true }],
+                    ['jpegtran', { progressive: true }],
+                    ['optipng', { optimizationLevel: 5 }],
+                    [
+                        'svgo',
+                        {
+                            plugins: [
+                                {
+                                    removeViewBox: false,
+                                },
+                            ],
+                        },
+                    ],
+                ],
+            },
+        }),
     ],
 
 
@@ -125,7 +149,7 @@ module.exports = {
             {
                 // local/downloaded images will be copied to the outputPath
                 // !once its imported via src() inside a css/scss
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                test: /\.(jpe?g|png|gif|svg)$/i,
                 use: [
                     {
                         loader: 'file-loader',
