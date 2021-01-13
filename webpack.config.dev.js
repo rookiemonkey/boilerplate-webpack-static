@@ -15,8 +15,10 @@ module.exports = merge(common, {
                 cache: true,
                 parallel: true,
                 sourceMap: false,
+                extractComments: false,
                 terserOptions: {
                     // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+                    comments: false,
                 }
             })
         ]
